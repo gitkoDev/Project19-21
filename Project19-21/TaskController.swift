@@ -16,6 +16,7 @@ extension String {
 class TaskController: UIViewController {
 	@IBOutlet var textView: UITextView!
 	@IBOutlet var deleteBtn: UIBarButtonItem!
+	@IBOutlet var shareBtn: UIBarButtonItem!
 	
 	var text: String?
 	var cellIndex: Int?
@@ -29,6 +30,7 @@ class TaskController: UIViewController {
 			deleteBtn.isEnabled = false
 			deleteBtn.tintColor = .white
 			
+//			If there is a cell index, that means the task already exists in the table view
 			if cellIndex != nil {
 				deleteBtn.isEnabled = true
 				deleteBtn.tintColor = .systemBlue
@@ -55,9 +57,12 @@ class TaskController: UIViewController {
 		}
 	}
 	
-	
-	@IBAction func deleteTapped(_ sender: Any) {
-		
+
+	@IBAction func shareTapped(_ sender: Any) {
+		print("share tapped")
+		let items = [textView.text]
+		let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+		present(ac, animated: true)
 	}
 	
 }

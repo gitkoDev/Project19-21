@@ -41,7 +41,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let taskVC = segue.destination as! TaskController
 		
-//		If we're adding a new task
 		if segue.identifier == "showFullTaskSegue" {
 			if let cell = sender as? UITableViewCell {
 				if let indexPath = tableView.indexPath(for: cell) {
@@ -55,11 +54,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
 	@IBAction func unwindToTableView(_ segue: UIStoryboardSegue) {
 		if segue.identifier == "unwindToTableView" {
-//			If the textView is not empty, close the taskContoller and not add a new entry
+//			If the textView is not empty, close the taskContoller and add a new entry
 			if let taskContent = taskContent {
+//				If we return to table view with didChangeText set to nil, than means the task has been created right now, so we append it to the array 
 				if didChangeText == nil {
 					allTasks.append(SingleTask(taskText: taskContent, wasChanged: false))
 					tableView.reloadData()
+//					If we return to table view with didChangeText set to false, that means the task was created before and not changed now, so just put it back to nil and do nothing
 				} else if didChangeText == false {
 					didChangeText = nil
 					return

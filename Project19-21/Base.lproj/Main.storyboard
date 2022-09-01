@@ -112,9 +112,14 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
+                            <barButtonItem systemItem="action" id="jYD-ot-acf">
+                                <connections>
+                                    <action selector="shareTapped:" destination="NPI-j1-qCO" id="gGa-Zl-1hq"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem systemItem="trash" id="IPn-3b-BBy">
                                 <connections>
-                                    <action selector="deleteTapped:" destination="NPI-j1-qCO" id="uGV-bK-joU"/>
+                                    <action selector="shareTapped:" destination="NPI-j1-qCO" id="y0T-2H-y27"/>
                                     <segue destination="Lse-Cr-Tv8" kind="unwind" identifier="deleteAndUnwindToTableView" unwindAction="unwindToTableView:" id="ztt-7s-H6v"/>
                                 </connections>
                             </barButtonItem>
@@ -122,6 +127,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="deleteBtn" destination="IPn-3b-BBy" id="yiw-ml-8a7"/>
+                        <outlet property="shareBtn" destination="jYD-ot-acf" id="Huc-Zw-MMF"/>
                         <outlet property="textView" destination="Zca-u2-i8c" id="H4V-Hm-RIs"/>
                     </connections>
                 </viewController>
