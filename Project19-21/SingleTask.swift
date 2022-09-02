@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct SingleTask {
+struct SingleTask: Codable {
 	var taskText: String
 	var wasChanged: Bool
 }

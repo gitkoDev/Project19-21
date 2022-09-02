@@ -12,13 +12,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	var taskContent: String?
 	var didChangeText: Bool?
 	var cellIndex: Int!
-	
+
 	@IBOutlet var tableView: UITableView!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		tableView.dataSource = self
 		tableView.delegate = self
+		
+		let userDefaults = UserDefaults.standard
+		if let savedData = userDefaults.object(forKey: "allTasks") as? Data {
+			let jsonDecoder = JSONDecoder()
+			
+			do {
+				allTasks = try jsonDecoder.decode([SingleTask].self, from: savedData)
+			} catch {
+				print("not decoded")
+			}
+			
+		}
+		
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,13 +65,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		}
 	}
 
+//	If done is clicked
 	@IBAction func unwindToTableView(_ segue: UIStoryboardSegue) {
 		if segue.identifier == "unwindToTableView" {
-//			If the textView is not empty, close the taskContoller and add a new entry
+//			If the textView is not nil, move on
 			if let taskContent = taskContent {
 //				If we return to table view with didChangeText set to nil, than means the task has been created right now, so we append it to the array 
 				if didChangeText == nil {
 					allTasks.append(SingleTask(taskText: taskContent, wasChanged: false))
+					
+					save()
+					
 					tableView.reloadData()
 //					If we return to table view with didChangeText set to false, that means the task was created before and not changed now, so just put it back to nil and do nothing
 				} else if didChangeText == false {
@@ -68,6 +85,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 					allTasks[cellIndex].wasChanged = true
 					allTasks[cellIndex].taskText = taskContent
 					didChangeText = nil
+					
+					save()
+					
 					tableView.reloadData()
 				}
 
@@ -76,7 +96,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		
 		if segue.identifier == "deleteAndUnwindToTableView" {
 			allTasks.remove(at: cellIndex)
+			
+			save()
+			
 			tableView.reloadData()
+		}
+	}
+	
+	func save() {
+		let jsonEncoder = JSONEncoder()
+		
+		if let savedData = try? jsonEncoder.encode(allTasks) {
+			let userDefaults = UserDefaults.standard
+			userDefaults.set(savedData, forKey: "allTasks")
 		}
 	}
 
